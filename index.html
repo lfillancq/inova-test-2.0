@@ -1,0 +1,43 @@
+<html>
+  <head>
+    <title>Parcel Sandbox</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="src/styles.css" />
+  </head>
+
+  <body>
+    <div class="topnav">
+      <a class="active" href="#home">Home</a>
+      <div class="search-container">
+        <input
+          id="searchCountry"
+          type="text"
+          placeholder="Search.."
+          name="search"
+        />
+        <button
+          type="submit"
+          id="searchbutton"
+          variant="outline-danger"
+          onclick="buildListCountry()"
+        >
+          Submit
+        </button>
+      </div>
+    </div>
+    <br />
+    <ul id="list"></ul>
+    <div id="container">
+      <h2 id="name">Choose a country</h2>
+      <img id="flag" src="https://www.icone-png.com/png/35/34754.png" />
+      <p id="nativeName"></p>
+      <p id="capital"></p>
+      <p id="languages"></p>
+      <p id="population"></p>
+      <p id="timezones"></p>
+      <p id="currencies"></p>
+      <p id="borders"></p>
+    </div>
+    <script src="src/index.js"></script>
+  </body>
+</html>
