@@ -17,6 +17,7 @@ export function codeToName(code, countries) {
   return "";
 }
 export function removeAllChild(parent) {
+  // function that clear the list of counties when you search for another country
   while (parent.firstChild) {
     parent.removeChild(parent.firstChild);
   }
