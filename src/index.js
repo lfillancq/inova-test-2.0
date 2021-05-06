@@ -50,15 +50,13 @@ function chop(n, str) {
   }
   return chopped;
 }
-function codeToName(code) {
+function codeToName(countries, code) {
   //function that returns the name of a country by associating it with its alpha3Code
-  getCountries().then((countries) => {
-    for (let i = 0; i < countries.length; i++) {
-      if (code === countries[i].alpha3Code) {
-        return countries[i].name;
-      }
+  for (let i = 0; i < countries.length; i++) {
+    if (code === countries[i].alpha3Code) {
+      return countries[i].name;
     }
-  });
+  }
   return "";
 }
 window.buildDetails = function (selected) {
@@ -69,9 +67,7 @@ window.buildDetails = function (selected) {
       (el) =>
         (el.style.backgroundColor = el.id === selected.id ? "#aaa" : "#ddd")
     );
-  console.log("hey");
   getCountries().then((countries) => {
-    console.log("hi");
     for (let i = 0; i < countries.length; i++) {
       //we go through all the countries in the database (here the list of 'Country' objects)
       if (selected.id === countries[i].name) {
@@ -97,10 +93,10 @@ window.buildDetails = function (selected) {
             ", " + countries[i].currencies[j]["name"];
         }
         document.getElementById("borders").innerHTML =
-          "Borders : " + codeToName(countries[i].borders[0]);
+          "Borders : " + codeToName(countries, countries[i].borders[0]);
         for (let j = 1; j < countries[i].borders.length; j++) {
           document.getElementById("borders").innerHTML +=
-            ", " + codeToName(countries[i].borders[j]);
+            ", " + codeToName(countries, countries[i].borders[j]);
         }
         document.getElementById("timezones").innerHTML =
           countries[i].timezones[0];
