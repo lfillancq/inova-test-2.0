@@ -1,64 +1,7 @@
-class Country {
-  //object Country that match the database attribute
-  constructor(
-    //constructor to associate object attributes to attributes of the instances of the database
-    name,
-    alpha2Code,
-    alpha3Code,
-    flag,
-    nativeName,
-    capital,
-    population,
-    languages,
-    timezones,
-    currencies,
-    borders
-  ) {
-    this.name = name;
-    this.alpha2Code = alpha2Code;
-    this.alpha3Code = alpha3Code;
-    this.flag = flag;
-    this.nativeName = nativeName;
-    this.capital = capital;
-    this.population = population;
-    this.languages = languages;
-    this.timezones = timezones;
-    this.currencies = currencies;
-    this.borders = borders;
-  }
-}
+import { removeAllChild } from "./utils.js";
+import { codeToName } from "./utils.js";
+import { getCountries } from "./country.js";
 
-function getCountries() {
-  // we are gonna get the data stored on the rest api
-  return (
-    fetch("https://restcountries.eu/rest/v2/all")
-      // the JSON body is taken from the response
-      .then((res) => res.json())
-      .then((res) => {
-        // The response has an 'any' type, so we need to cast
-        // it to the 'Country' type, and return it from the promise
-        return res;
-      })
-  );
-}
-function chop(n, str) {
-  //function to chop chunks of the names of countries that could be the researched country
-  let chopped = [];
-  for (let i = 0; i < str.length - n; i++) {
-    //we go through the string
-    chopped.push(str.substring(i, i + n)); //we put every chunks of the size n of the input that are in the string
-  }
-  return chopped;
-}
-function codeToName(countries, code) {
-  //function that returns the name of a country by associating it with its alpha3Code
-  for (let i = 0; i < countries.length; i++) {
-    if (code === countries[i].alpha3Code) {
-      return countries[i].name;
-    }
-  }
-  return "";
-}
 window.buildDetails = function (selected) {
   //function that will build the text of the container according to what country is selected
   document
@@ -93,13 +36,16 @@ window.buildDetails = function (selected) {
             ", " + countries[i].currencies[j]["name"];
         }
         document.getElementById("borders").innerHTML =
-          "Borders : " + codeToName(countries, countries[i].borders[0]);
+          "Borders : " + codeToName(countries[i].borders[0], countries);
         for (let j = 1; j < countries[i].borders.length; j++) {
           document.getElementById("borders").innerHTML +=
-            ", " + codeToName(countries, countries[i].borders[j]);
+            ", " + codeToName(countries[i].borders[j], countries);
+        }
+        if (codeToName(countries[i].borders, countries) === []) {
+          document.getElementById("borders").innerHTML = "Borders : None";
         }
         document.getElementById("timezones").innerHTML =
-          countries[i].timezones[0];
+          "Times Zones : " + countries[i].timezones[0];
         for (let j = 1; j < countries[i].timezones.length; j++) {
           document.getElementById("timezones").innerHTML +=
             ", " + countries[i].timezones[j];
@@ -108,11 +54,7 @@ window.buildDetails = function (selected) {
     }
   });
 };
-function removeAllChild(parent) {
-  while (parent.firstChild) {
-    parent.removeChild(parent.firstChild);
-  }
-}
+
 window.buildListCountry = function () {
   //function that will build the list of resulting countries according to the input submitted
   //we get the data from the rest api and we convert it into a list of 'Country' objects
@@ -145,6 +87,3 @@ window.buildListCountry = function () {
     }
   });
 };
-//var input = document.getElementById("searchCountry");
-//buildListCountry(input.value);
-//document.getElementById('searchbutton').addEventListener ("click", buildList(input.value), false);
